@@ -1,0 +1,28 @@
+.List {
+  width: 30%;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 1rem calc(10% / 6);
+}
+.List-name {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.List-item-ctnr {
+  border: 1px solid white;
+  min-height: 200px;
+  flex-grow: 1;
+  width: 100%;
+}
+.List-item {
+  border: 1px solid white;
+  margin: 1rem 18% 1rem;
+  word-break: break-word;
+}
