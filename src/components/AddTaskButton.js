@@ -1,15 +1,12 @@
 import React from 'react';
 import './scss/AddTaskButton.scss';
 
-const AddTaskButton = () => {
-  const showAddTaskModal = () => {
-    document.getElementById('addTaskModal').classList.remove('hidden');
-  }
+const AddTaskButton = (props) => {
   return (
     <>
       <button 
         className='AddTaskButton'
-        onClick={showAddTaskModal}
+        onClick={() => props.hideOrShow('addTaskModal')}
       >
         Add a Task
       </button>

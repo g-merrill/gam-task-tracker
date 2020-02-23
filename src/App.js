@@ -9,6 +9,10 @@ class App extends Component {
     lists: [],
   }
 
+  hideOrShow = (id) => {
+    document.getElementById(id).classList.toggle('hidden');
+  }
+
   componentDidMount = () => {
     let list1 = {name: 'List 1', items: ['Drink milk', 'Buy bread']};
     let list2 = {name: 'List 2', items: ['Eat food', 'Get sleep']};
@@ -26,9 +30,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <AddTaskButton />
+        <AddTaskButton 
+          hideOrShow={this.hideOrShow}
+        />
         <AddTaskModal 
           lists={this.state.lists} 
+          hideOrShow={this.hideOrShow}
         />
         <ListContainer 
           lists={this.state.lists} 
