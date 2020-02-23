@@ -8,12 +8,9 @@
   flex-direction: column;
   align-items: center;
   padding: 10vmin;
-  // * {
-  //   border: 1px solid;
-  // }
 }
 
-.AddTaskModal-which-list {
+.AddTaskModal-heading {
   margin: 0 0 40px;
 }
 
@@ -80,4 +77,15 @@
     opacity: 1;
     transform: scale(1.1);
   }
+}
+
+.AddTaskModal-task-input {
+  border: 1px solid white;
+  border-radius: 0.5rem;
+  background: black;
+  font-size: 1rem;
+  line-height: 2rem;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  outline: none;
 }

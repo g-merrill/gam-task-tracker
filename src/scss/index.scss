@@ -20,3 +20,36 @@ button:focus {
 .hidden {
   display: none !important;
 }
+
+.slide-out {
+  animation: slide-out 1s ease;
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0vw);
+    opacity: 1;
+  }
+  10% {
+    transform: skewX(-50deg) translateX(5vw);
+  }
+  100% {
+    transform: skewX(-20deg) translateX(-80vw);
+    opacity: 0;
+  }
+}
+
+.slide-in {
+  animation: slide-in 1s ease;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: skewX(-20deg) translateX(80vw);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0vw);
+    opacity: 1;
+  }
+}

@@ -9,8 +9,19 @@ class App extends Component {
     lists: [],
   }
 
-  hideOrShow = (id) => {
-    document.getElementById(id).classList.toggle('hidden');
+  hideOrShow = (idArray) => {
+    idArray.forEach(id => 
+      document.getElementById(id).classList.toggle('hidden'));
+  }
+
+  addTaskToList = (list, task) => {
+    let lists = this.state.lists.map(oldList => {
+      if (oldList.name === list) {
+        oldList.items.push(task);
+      }
+      return oldList;
+    });
+    this.setState({ lists });
   }
 
   componentDidMount = () => {
@@ -36,6 +47,7 @@ class App extends Component {
         <AddTaskModal 
           lists={this.state.lists} 
           hideOrShow={this.hideOrShow}
+          addTaskToList={this.addTaskToList}
         />
         <ListContainer 
           lists={this.state.lists} 
