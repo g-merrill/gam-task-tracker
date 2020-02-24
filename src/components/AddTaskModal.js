@@ -4,21 +4,28 @@ import './scss/AddTaskModal.scss';
 class AddTaskModal extends Component {
   state = {
     selectedList: 'Loading lists...',
-    otherListNames: []
+    otherListNames: [],
+    taskInput: ''
   }
 
   slideOutOrIn = (outArr, inArr) => {
     if (outArr.length) {
       outArr.forEach(id => {
-        document.getElementById(id).classList.add('slide-out');
+        document.getElementById(id).classList.toggle('slide-out');
       });
     }
     if (inArr.length) {
       inArr.forEach(id => {
-        document.getElementById(id).classList.add('slide-in');
+        document.getElementById(id).classList.toggle('slide-in');
       });
     }
   }
+
+  changeHeadingTo = (text) => {
+    document.getElementById('AddTaskModal-heading').innerText = text;
+  }
+
+  getInputVal = () => document.getElementById('AddTaskModal-task-input').value;
 
   setSelectedList = (listName) => {
     let selectedList = listName;
@@ -53,18 +60,38 @@ class AddTaskModal extends Component {
         'AddTaskModal-choose-list-btn',
         'AddTaskModal-task-input-form'
       ]);
-      document.getElementById('AddTaskModal-heading').innerText = 'What you need to do';
+      this.changeHeadingTo('What you need to do');
       this.slideOutOrIn([], ['AddTaskModal-heading', 'AddTaskModal-task-input-form']);
-    }, 1000);
+    }, 500);
+  }
+
+  handleChange = () => {
+    let taskInput = this.getInputVal();
+    this.setState({ taskInput });
   }
 
   submitTask = (e) => {
     e.preventDefault();
     let list = this.state.selectedList;
-    let task = document.getElementById('AddTaskModal-task-input').value;
+    let task = this.getInputVal();
+    let taskInput = '';
     this.props.addTaskToList(list, task);
-    // TODO: reset to first modal slide
+    this.resetModal();
+    this.setState({ taskInput });
+  }
+
+  resetModal = () => {
+    this.slideOutOrIn(['AddTaskModal-heading', 'AddTaskModal-list-selecter', 'AddTaskModal-choose-list-btn'], ['AddTaskModal-heading', 'AddTaskModal-task-input-form']);
+    this.props.hideOrShow([
+      'AddTaskModal-list-selecter', 
+      'AddTaskModal-choose-list-btn',
+      'AddTaskModal-task-input-form'
+    ]);
+    this.changeHeadingTo('Which list?');
+    let selectedList = this.props.lists[this.props.lists.length - 1].name;
+    this.updateOtherLists(selectedList);
     this.props.hideOrShow(['addTaskModal']);
+    this.setState({ selectedList });
   }
 
   componentDidUpdate = () => {
@@ -89,7 +116,9 @@ class AddTaskModal extends Component {
         <h1 
           id='AddTaskModal-heading'
           className='AddTaskModal-heading'
-        >Which list?</h1>
+        >
+          Which list?
+        </h1>
         <div
           id='AddTaskModal-list-selecter'
           className='AddTaskModal-list-selecter-btn'
@@ -101,12 +130,12 @@ class AddTaskModal extends Component {
           >
             {this.state.selectedList}
             <div 
-              className="AddTaskModal-arrow-down"
+              className='AddTaskModal-arrow-down'
             />
           </div>
           <div 
             id='AddTaskModal-other-lists'
-            className="AddTaskModal-other-lists hidden"
+            className='AddTaskModal-other-lists hidden'
           >
             {this.state.otherListNames}
           </div>
@@ -126,10 +155,12 @@ class AddTaskModal extends Component {
           <input 
             id='AddTaskModal-task-input'
             className='AddTaskModal-task-input' 
-            type="text" 
+            type='text' 
+            onChange={this.handleChange}
+            value={this.state.taskInput}
           />
           <button 
-            type="submit"
+            type='submit'
             className='AddTaskModal-choose-list-btn'
           >
             Add task to {this.state.selectedList}

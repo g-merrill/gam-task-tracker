@@ -10,7 +10,6 @@ body {
     sans-serif;
     background: #000;
   color: #fff;
-
 }
 
 button:focus {
@@ -22,7 +21,7 @@ button:focus {
 }
 
 .slide-out {
-  animation: slide-out 1s ease;
+  animation: slide-out 0.5s ease;
 }
 
 @keyframes slide-out {
@@ -40,7 +39,7 @@ button:focus {
 }
 
 .slide-in {
-  animation: slide-in 1s ease;
+  animation: slide-in 0.5s ease;
 }
 
 @keyframes slide-in {

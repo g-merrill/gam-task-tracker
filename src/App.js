@@ -40,7 +40,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <AddTaskButton 
           hideOrShow={this.hideOrShow}
         />
