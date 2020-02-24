@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-from .commands import reset_lists
+from .commands import reset_models
 
 def create_app():
   app = Flask(__name__)
@@ -16,6 +16,6 @@ def create_app():
   from .views import api
   app.register_blueprint(api)
 
-  app.cli.add_command(reset_lists)
+  app.cli.add_command(reset_models)
 
   return app

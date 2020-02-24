@@ -13,7 +13,7 @@ class List extends Component {
             key={idx}
             className='List-item'
           >
-            {item}
+            {item.description}
           </li>
         ))}
         </ol>
