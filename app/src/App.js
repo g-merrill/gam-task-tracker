@@ -18,7 +18,7 @@ class App extends Component {
   addTaskToList = (list, task) => {
     let lists = this.state.lists.map(oldList => {
       if (oldList.name === list) {
-        oldList.items.push(task);
+        oldList.items.push({'description': task});
       }
       return oldList;
     });
