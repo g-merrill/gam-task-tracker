@@ -8,6 +8,7 @@ import { getAllLists } from './utils/listService';
 class App extends Component {
   state = {
     lists: [],
+    isDataLoaded: false
   }
 
   hideOrShow = (idArray) => {
@@ -27,23 +28,34 @@ class App extends Component {
 
   componentDidMount = async () => {
     let lists = await getAllLists();
-    this.setState({ lists });
+    let isDataLoaded = true;
+    this.setState({ lists, isDataLoaded });
   }
 
   render() {
     return (
       <div className='App'>
-        <AddTaskButton 
-          hideOrShow={this.hideOrShow}
-        />
-        <AddTaskModal 
-          lists={this.state.lists} 
-          hideOrShow={this.hideOrShow}
-          addTaskToList={this.addTaskToList}
-        />
-        <ListContainer 
-          lists={this.state.lists} 
-        />
+      {this.state.isDataLoaded ? (
+        <>
+          <AddTaskButton 
+            hideOrShow={this.hideOrShow}
+          />
+          <AddTaskModal 
+            lists={this.state.lists} 
+            hideOrShow={this.hideOrShow}
+            addTaskToList={this.addTaskToList}
+          />
+          <ListContainer 
+            lists={this.state.lists} 
+          />
+        </>
+      ) : (
+        <div class='loader'>
+          <div class='loader-inner loader-one' />
+          <div class='loader-inner loader-two' />
+          <div class='loader-inner loader-three' />
+        </div>
+      )}
       </div>
     );
   }
