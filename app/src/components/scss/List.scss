@@ -42,27 +42,28 @@
   cursor: pointer;
   &:hover {
     color: white;
-    background: rgba(57, 201, 0, 1.0);;
+    background: rgba(57, 201, 0, 1.0);
   }
 }
 
 .List-item-txt {
   padding: 0 1rem;
-  flex-grow: 1;
+  width: calc(100% - 3rem);
 }
 
 .List-item-x {
-  color: rgba(255, 0, 0, 1);
+  color: red;
   transition: all 0.3s ease;
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: 10%;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  border: 1px solid transparent;
   &:hover {
-    color: white;
-    background: rgba(200, 0, 0, 1);
+    border: 1px solid red;
+    transform: scale(1.3);
   }
 }
