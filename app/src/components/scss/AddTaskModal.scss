@@ -58,27 +58,6 @@
   }
 }
 
-.AddTaskModal-choose-list-btn {
-  cursor: pointer;
-  border: 1px solid transparent;
-  background: blueviolet;
-  color: white;
-  margin: 50px 0;
-  padding: 12px 18px;
-  border-radius: 6px;
-  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  outline: transparent;
-  opacity: 0.9;
-  transition: all .3s ease;
-
-  &:hover {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-}
-
 .AddTaskModal-task-input {
   border: 1px solid white;
   border-radius: 0.5rem;

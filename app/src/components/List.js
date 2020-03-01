@@ -7,16 +7,28 @@ class List extends Component {
     return (
       <div className='List'>
         <div className='List-name'>{name}</div>
-        <ol className='List-item-ctnr'>
+        <ul className='List-item-ctnr'>
         {items.map((item, idx) => (
           <li 
             key={idx}
             className='List-item'
           >
-            {item.description}
+            <div 
+              className='List-item-check'
+            >
+              &#10003;
+            </div>
+            <span 
+              className='List-item-txt'
+            >
+              {item.description}
+            </span>
+            <div className='List-item-x'>
+              X
+            </div>
           </li>
         ))}
-        </ol>
+        </ul>
       </div>
     );
   }

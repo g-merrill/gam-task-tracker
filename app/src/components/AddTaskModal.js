@@ -3,22 +3,32 @@ import './scss/AddTaskModal.scss';
 
 class AddTaskModal extends Component {
   state = {
-    selectedList: 'Loading lists...',
+    selectedList: null,
     otherListNames: [],
-    taskInput: ''
+    taskInput: '',
+    modalSlide: 1
+  }
+
+  loadSelectedList = () => {
+    const lists = this.props.lists;
+    if (lists.length) {
+      this.setState({ 
+        selectedList: lists[lists.length - 1].name
+      });
+    }
   }
 
   slideOutOrIn = (outArr, inArr) => {
-    if (outArr.length) {
-      outArr.forEach(id => {
-        document.getElementById(id).classList.toggle('slide-out');
+    outArr.length
+      && outArr.forEach(id => {
+        document.getElementById(id).classList.remove('slide-in');
+        document.getElementById(id).classList.add('slide-out');
       });
-    }
-    if (inArr.length) {
-      inArr.forEach(id => {
-        document.getElementById(id).classList.toggle('slide-in');
+    inArr.length
+      && inArr.forEach(id => {
+        document.getElementById(id).classList.remove('slide-out');
+        document.getElementById(id).classList.add('slide-in');
       });
-    }
   }
 
   changeHeadingTo = (text) => {
@@ -29,7 +39,7 @@ class AddTaskModal extends Component {
 
   setSelectedList = (listName) => {
     let selectedList = listName;
-    this.props.hideOrShow(['AddTaskModal-other-lists']);
+    this.props.hideOrShow(['AddTaskModal-other-lists'], []);
     this.updateOtherLists(selectedList);
     this.setState({ selectedList });
   }
@@ -57,12 +67,14 @@ class AddTaskModal extends Component {
     setTimeout(() => {
       this.props.hideOrShow([
         'AddTaskModal-list-selecter', 
-        'AddTaskModal-choose-list-btn',
+        'AddTaskModal-choose-list-btn'
+      ], [
         'AddTaskModal-task-input-form'
       ]);
       this.changeHeadingTo('What you need to do');
       this.slideOutOrIn([], ['AddTaskModal-heading', 'AddTaskModal-task-input-form']);
     }, 500);
+    this.setState({ modalSlide: 2 });
   }
 
   handleChange = () => {
@@ -74,61 +86,52 @@ class AddTaskModal extends Component {
     e.preventDefault();
     let list = this.state.selectedList;
     let task = this.getInputVal();
-    let taskInput = '';
     this.props.addTaskToList(list, task);
     this.resetModal();
-    this.setState({ taskInput });
   }
 
   resetModal = () => {
-    this.slideOutOrIn(['AddTaskModal-heading', 'AddTaskModal-list-selecter', 'AddTaskModal-choose-list-btn'], ['AddTaskModal-heading', 'AddTaskModal-task-input-form']);
+    let taskInput = '';
+    let modalSlide = 1;
     this.props.hideOrShow([
+      'addTaskModal', 
+      'AddTaskModal-task-input-form'
+    ], [
       'AddTaskModal-list-selecter', 
       'AddTaskModal-choose-list-btn',
-      'AddTaskModal-task-input-form'
     ]);
     this.changeHeadingTo('Which list?');
-    let selectedList = this.props.lists[this.props.lists.length - 1].name;
-    this.updateOtherLists(selectedList);
-    this.props.hideOrShow(['addTaskModal']);
-    this.setState({ selectedList });
+    document.getElementById('AddTaskModal-other-lists').classList.add('hidden');
+    this.slideOutOrIn([], ['AddTaskModal-heading', 'AddTaskModal-list-selecter', 'AddTaskModal-choose-list-btn']);
+    this.setState({ taskInput, modalSlide });
+  }
+
+  componentDidMount = () => {
+    this.loadSelectedList();
   }
 
   componentDidUpdate = () => {
-    const lists = this.props.lists;
     let selectedList = this.state.selectedList;
-    let otherListNames = this.state.otherListNames;
-    if (selectedList === 'Loading lists...' && lists.length) {
-      selectedList = lists[lists.length - 1].name;
-      this.setState({ selectedList });
-    }
-    if (selectedList !== 'Loading lists...' && !otherListNames.length) {
-      this.updateOtherLists(selectedList);
-    }
+    selectedList 
+      && !this.state.otherListNames.length 
+      && this.updateOtherLists(selectedList);
   }
 
   render() {
-    return (
-      <div 
-        id='addTaskModal'
-        className='AddTaskModal hidden'
-      >
-        <h1 
-          id='AddTaskModal-heading'
-          className='AddTaskModal-heading'
-        >
-          Which list?
-        </h1>
+    const modalSlideOne = (
+      <>
         <div
           id='AddTaskModal-list-selecter'
-          className='AddTaskModal-list-selecter-btn'
+          className='AddTaskModal-list-selecter-btn slide-in'
         >
           <div 
             id='AddTaskModal-selected-list'
             className='AddTaskModal-selected-list'
-            onClick={() => this.props.hideOrShow(['AddTaskModal-other-lists'])}
+            onClick={() => 
+              document.getElementById('AddTaskModal-other-lists')
+                .classList.toggle('hidden')}
           >
-            {this.state.selectedList}
+            {this.state.selectedList ? this.state.selectedList : 'Loading lists...'}
             <div 
               className='AddTaskModal-arrow-down'
             />
@@ -142,30 +145,55 @@ class AddTaskModal extends Component {
         </div>
         <button
           id='AddTaskModal-choose-list-btn'
-          className='AddTaskModal-choose-list-btn'
+          className='purple-btn slide-in'
           onClick={this.chooseList}
         >
           Choose This List
         </button>
-        <form 
-          id='AddTaskModal-task-input-form'
-          className='AddTaskModal-task-input-form hidden'
-          onSubmit={this.submitTask}
+      </>
+    );
+
+    const modalSlideTwo = (
+      <form 
+        id='AddTaskModal-task-input-form'
+        className='AddTaskModal-task-input-form hidden'
+        onSubmit={this.submitTask}
+      >
+        <input 
+          id='AddTaskModal-task-input'
+          className='AddTaskModal-task-input' 
+          type='text' 
+          onChange={this.handleChange}
+          value={this.state.taskInput}
+        />
+        <button 
+          type='submit'
+          className='purple-btn'
         >
-          <input 
-            id='AddTaskModal-task-input'
-            className='AddTaskModal-task-input' 
-            type='text' 
-            onChange={this.handleChange}
-            value={this.state.taskInput}
-          />
-          <button 
-            type='submit'
-            className='AddTaskModal-choose-list-btn'
-          >
-            Add task to {this.state.selectedList}
-          </button>
-        </form>
+          Add task to {this.state.selectedList}
+        </button>
+      </form>
+    );
+
+    return (
+      <div 
+        id='addTaskModal'
+        className='AddTaskModal hidden'
+      >
+        <button 
+          className='purple-btn align-flex-end'
+          onClick={this.resetModal}
+        >
+          X
+        </button>
+        <h1 
+          id='AddTaskModal-heading'
+          className='AddTaskModal-heading slide-in'
+        >
+          Which list?
+        </h1>
+        {modalSlideOne}
+        {modalSlideTwo}
       </div>
     );
   }

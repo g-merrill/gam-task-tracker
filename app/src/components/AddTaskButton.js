@@ -5,8 +5,8 @@ const AddTaskButton = (props) => {
   return (
     <>
       <button 
-        className='AddTaskButton'
-        onClick={() => props.hideOrShow(['addTaskModal'])}
+        className='purple-btn'
+        onClick={() => props.hideOrShow([], ['addTaskModal'])}
       >
         Add a Task
       </button>

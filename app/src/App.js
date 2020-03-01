@@ -11,9 +11,13 @@ class App extends Component {
     isDataLoaded: false
   }
 
-  hideOrShow = (idArray) => {
-    idArray.forEach(id => 
-      document.getElementById(id).classList.toggle('hidden'));
+  hideOrShow = (hideArr, showArr) => {
+    hideArr.length
+      && hideArr.forEach(id => 
+        document.getElementById(id).classList.add('hidden'));
+    showArr.length
+      && showArr.forEach(id => 
+        document.getElementById(id).classList.remove('hidden'));
   }
 
   addTaskToList = (list, task) => {
@@ -50,10 +54,10 @@ class App extends Component {
           />
         </>
       ) : (
-        <div class='loader'>
-          <div class='loader-inner loader-one' />
-          <div class='loader-inner loader-two' />
-          <div class='loader-inner loader-three' />
+        <div className='loader'>
+          <div className='loader-inner loader-one' />
+          <div className='loader-inner loader-two' />
+          <div className='loader-inner loader-three' />
         </div>
       )}
       </div>
