@@ -3,7 +3,7 @@ import './scss/List.scss';
 
 class List extends Component {
   render() {
-    const {name, items} = this.props.list;
+    const {id: listId, name, items} = this.props.list;
     return (
       <div className='List'>
         <div className='List-name'>{name}</div>
@@ -23,7 +23,10 @@ class List extends Component {
             >
               {item.description}
             </span>
-            <div className='List-item-x'>
+            <div 
+              className='List-item-x'
+              onClick={() => this.props.deleteTaskFromList(listId, item.id)}
+            >
               X
             </div>
           </li>

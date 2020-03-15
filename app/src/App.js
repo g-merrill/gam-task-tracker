@@ -4,6 +4,7 @@ import ListContainer from './components/ListContainer';
 import AddTaskButton from './components/AddTaskButton';
 import AddTaskModal from './components/AddTaskModal';
 import { getAllLists } from './utils/listService';
+import { addTaskToDB } from './utils/itemService';
 
 class App extends Component {
   state = {
@@ -20,10 +21,20 @@ class App extends Component {
         document.getElementById(id).classList.remove('hidden'));
   }
 
-  addTaskToList = (list, task) => {
+  addTaskToList = async (listId, task) => {
+    let newTask = await addTaskToDB(listId, task);
+    let lists = this.state.lists.map( oldList => {
+      oldList.id === listId && oldList.items.push(newTask);
+      return oldList;
+    });
+    this.setState({ lists });
+  }
+
+  deleteTaskFromList = (listId, taskId) => {
     let lists = this.state.lists.map(oldList => {
-      if (oldList.name === list) {
-        oldList.items.push({'description': task});
+      if (oldList.id === listId) {
+        // TODO async delete from db
+        oldList.items = oldList.items.filter(item => item.id !== taskId);
       }
       return oldList;
     });
@@ -51,6 +62,7 @@ class App extends Component {
           />
           <ListContainer 
             lists={this.state.lists} 
+            deleteTaskFromList={this.deleteTaskFromList}
           />
         </>
       ) : (

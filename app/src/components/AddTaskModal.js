@@ -13,7 +13,7 @@ class AddTaskModal extends Component {
     const lists = this.props.lists;
     if (lists.length) {
       this.setState({ 
-        selectedList: lists[lists.length - 1].name
+        selectedList: lists[lists.length - 1]
       });
     }
   }
@@ -37,8 +37,8 @@ class AddTaskModal extends Component {
 
   getInputVal = () => document.getElementById('AddTaskModal-task-input').value;
 
-  setSelectedList = (listName) => {
-    let selectedList = listName;
+  setSelectedList = (list) => {
+    let selectedList = list;
     this.props.hideOrShow(['AddTaskModal-other-lists'], []);
     this.updateOtherLists(selectedList);
     this.setState({ selectedList });
@@ -48,12 +48,12 @@ class AddTaskModal extends Component {
     const lists = this.props.lists;
     let otherListNames = [];
     for (let i = lists.length - 1; i >= 0; i--) {
-      if (lists[i].name === selectedList) continue;
+      if (lists[i].name === selectedList.name) continue;
       otherListNames.push(
         <div 
           key={lists[i].name}
           className='AddTaskModal-other-list'
-          onClick={() => this.setSelectedList(lists[i].name)}
+          onClick={() => this.setSelectedList(lists[i])}
         >
           {lists[i].name}
         </div>
@@ -82,11 +82,11 @@ class AddTaskModal extends Component {
     this.setState({ taskInput });
   }
 
-  submitTask = (e) => {
+  submitTask = async (e) => {
     e.preventDefault();
-    let list = this.state.selectedList;
+    let listId = this.state.selectedList.id;
     let task = this.getInputVal();
-    this.props.addTaskToList(list, task);
+    await this.props.addTaskToList(listId, task);
     this.resetModal();
   }
 
@@ -112,7 +112,7 @@ class AddTaskModal extends Component {
 
   componentDidUpdate = () => {
     let selectedList = this.state.selectedList;
-    selectedList 
+    selectedList
       && !this.state.otherListNames.length 
       && this.updateOtherLists(selectedList);
   }
@@ -131,7 +131,7 @@ class AddTaskModal extends Component {
               document.getElementById('AddTaskModal-other-lists')
                 .classList.toggle('hidden')}
           >
-            {this.state.selectedList ? this.state.selectedList : 'Loading lists...'}
+            {this.state.selectedList ? this.state.selectedList.name : 'Loading lists...'}
             <div 
               className='AddTaskModal-arrow-down'
             />
@@ -170,7 +170,7 @@ class AddTaskModal extends Component {
           type='submit'
           className='purple-btn'
         >
-          Add task to {this.state.selectedList}
+          Add task to {this.state.selectedList ? this.state.selectedList.name : null}
         </button>
       </form>
     );
