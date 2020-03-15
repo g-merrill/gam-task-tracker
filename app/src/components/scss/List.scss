@@ -1,10 +1,32 @@
 .List {
-  width: 30%;
   border: 4px double rgba($color: blueviolet, $alpha: 0.6);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  margin: 1rem calc(10% / 6);
+}
+@media screen and (min-width: 1001px) {
+  .List {
+    width: 22.5%;
+    margin: 1rem calc(10% / 8);
+  }
+}
+@media screen and (max-width: 1000px) and (min-width: 701px) {
+  .List {
+    width: 30%;
+    margin: 1rem calc(10% / 6);
+  }
+}
+@media screen and (max-width: 700px) and (min-width: 476px) {
+  .List {
+    width: 45%;
+    margin: 1rem calc(10% / 4);
+  }
+}
+@media screen and (max-width: 475px) {
+  .List {
+    width: 90%;
+    margin: 1rem calc(10% / 2);
+  }
 }
 .List-name {
   width: 100%;
