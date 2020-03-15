@@ -12,7 +12,18 @@ const addTaskToDB = async (listId, description) => {
   });
 }
 
+const removeTaskFromDB = async (listId, itemId) => {
+  return await fetch(`/api/lists/${listId}/items/${itemId}`, {
+    method: 'DELETE',
+  })
+  .then(res => {
+    if (res.ok) return res.json();
+    throw new Error('Error deleting task!');
+  });
+}
+
 export {
   getListItems,
-  addTaskToDB
+  addTaskToDB,
+  removeTaskFromDB
 }
