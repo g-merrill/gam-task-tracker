@@ -25,7 +25,7 @@ class List extends Component {
             </span>
             <div 
               className='List-item-x'
-              onClick={() => this.props.deleteTaskFromList(listId, item.id)}
+              onClick={() => this.props.stageForDeletion(listId, item.id)}
             >
               X
             </div>

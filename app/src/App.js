@@ -5,11 +5,14 @@ import AddTaskButton from './components/AddTaskButton';
 import AddTaskModal from './components/AddTaskModal';
 import { getAllLists } from './utils/listService';
 import { addTaskToDB, removeTaskFromDB } from './utils/itemService';
+import ConfirmDeleteTaskModal from './components/ConfirmDeleteTaskModal';
 
 class App extends Component {
   state = {
     lists: [],
-    isDataLoaded: false
+    isDataLoaded: false,
+    deleteTaskListId: null,
+    deleteTaskItemId: null
   }
 
   hideOrShow = (hideArr, showArr) => {
@@ -30,6 +33,22 @@ class App extends Component {
     this.setState({ lists });
   }
 
+  stageForDeletion = (deleteTaskListId, deleteTaskItemId) => {
+    this.setState({
+      deleteTaskListId, 
+      deleteTaskItemId 
+    });
+    this.hideOrShow([], ['ConfirmDeleteTaskModal']);
+  }
+
+  cancelStageForDeletion = () => {
+    this.setState({
+      deleteTaskListId: null, 
+      deleteTaskItemId: null
+    });
+    this.hideOrShow(['ConfirmDeleteTaskModal'], []);
+  }
+
   deleteTaskFromList = async (listId, taskId) => {
     await removeTaskFromDB(listId, taskId);
     let lists = this.state.lists.map(list => {
@@ -38,7 +57,8 @@ class App extends Component {
       }
       return list;
     });
-    this.setState({ lists });
+    this.setState({ deleteTaskListId: null, deleteTaskItemId: null, lists });
+    this.hideOrShow(['ConfirmDeleteTaskModal'], []);
   }
 
   componentDidMount = async () => {
@@ -60,9 +80,15 @@ class App extends Component {
             hideOrShow={this.hideOrShow}
             addTaskToList={this.addTaskToList}
           />
+          <ConfirmDeleteTaskModal 
+            listId={this.state.deleteTaskListId}
+            itemId={this.state.deleteTaskItemId}
+            cancelStageForDeletion={this.cancelStageForDeletion}
+            deleteTaskFromList={this.deleteTaskFromList}
+          />
           <ListContainer 
             lists={this.state.lists} 
-            deleteTaskFromList={this.deleteTaskFromList}
+            stageForDeletion={this.stageForDeletion}
           />
         </>
       ) : (
